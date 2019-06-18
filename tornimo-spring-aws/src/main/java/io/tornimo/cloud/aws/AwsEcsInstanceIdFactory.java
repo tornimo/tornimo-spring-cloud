@@ -38,7 +38,11 @@ public class AwsEcsInstanceIdFactory {
     }
 
     static InstanceId getInstanceId(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig, String json) {
-        return metadataToInstanceId(parseMetadata(json, awsEcsMetadataConfig), awsEcsMetadataConfig, awsArnConfig);
+        return metadataToInstanceId(
+                parseMetadata(json, awsEcsMetadataConfig),
+                awsEcsMetadataConfig,
+                awsArnConfig
+        );
     }
 
     static InstanceId metadataToInstanceId(AwsEcsMetadata metadata, AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig) {
