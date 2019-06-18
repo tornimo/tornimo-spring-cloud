@@ -41,7 +41,6 @@
                     <execution>
                         <goals>
                             <goal>compile</goal>
-                            <!--goal>addTestSources</goal-->
                             <goal>testCompile</goal>
                         </goals>
                     </execution>
