@@ -3,14 +3,14 @@ package io.tornimo.cloud.aws
 
 import spock.lang.Specification
 
-class AwsEcsInstanceIdFactorySpock extends Specification {
+class AwsEcsTornimoPrefixFactorySpock extends Specification {
 
     def "parses all the data into instance id"() {
         given:
         def input = """{
                         "Cluster": "default",
                         "ContainerInstanceArn": "arn:aws:elasticbeanstalk:us-east-1:123456789012:environment/My App/MyEnvironment",
-                        "Version": "version"
+                        "Version": "parseVersion"
                     }"""
 
         when:
@@ -39,14 +39,14 @@ class AwsEcsInstanceIdFactorySpock extends Specification {
         )
 
         then:
-        instanceId.instanceId == "aws.elasticbeanstalk.us-east-1.123456789012.environment.My App.MyEnvironment.default.version"
+        instanceId.prefix == "aws.elasticbeanstalk.us-east-1.123456789012.environment.My App.MyEnvironment.default.parseVersion"
     }
 
     def "takes defaults when data is not parsed"() {
         given:
         def input = """{
-                        "Cluster": "cluster",
-                        "Version": "version"
+                        "Cluster": "parseCluster",
+                        "Version": "parseVersion"
                     }"""
 
         when:
@@ -75,15 +75,15 @@ class AwsEcsInstanceIdFactorySpock extends Specification {
         )
 
         then:
-        instanceId.instanceId == "partition.service.region.account.resourcetype.resource.qualifier.cluster.version"
+        instanceId.prefix == "partition.service.region.account.resourcetype.resource.qualifier.parseCluster.parseVersion"
     }
 
     def "takes defaults when data is not fully parsed"() {
         given:
         def input = """{
-                        "Cluster": "cluster",
+                        "Cluster": "parseCluster",
                         "ContainerInstanceArn": "arn:aws:s3:::my_corporate_bucket/exampleobjectpng"
-                        "Version": "version"
+                        "Version": "parseVersion"
                     }"""
 
         when:
@@ -112,15 +112,15 @@ class AwsEcsInstanceIdFactorySpock extends Specification {
         )
 
         then:
-        instanceId.instanceId == "aws.s3.region.account.my_corporate_bucket.exampleobjectpng.qualifier.cluster.version"
+        instanceId.prefix == "aws.s3.region.account.my_corporate_bucket.exampleobjectpng.qualifier.parseCluster.parseVersion"
     }
 
     def "escapes dots"() {
         given:
         def input = """{
-                        "Cluster": "cluster",
+                        "Cluster": "parseCluster",
                         "ContainerInstanceArn": "arn:aws:s3:::my_corporate_bucket/exampleobject.png"
-                        "Version": "version"
+                        "Version": "parseVersion"
                     }"""
 
         when:
@@ -149,6 +149,6 @@ class AwsEcsInstanceIdFactorySpock extends Specification {
         )
 
         then:
-        instanceId.instanceId == "aws.s3.region.account_acc.my_corporate_bucket.exampleobject_png.qualifier.cluster.version"
+        instanceId.prefix == "aws.s3.region.account_acc.my_corporate_bucket.exampleobject_png.qualifier.parseCluster.parseVersion"
     }
 }

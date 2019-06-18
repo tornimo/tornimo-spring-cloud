@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml parseVersion="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.tornimo</groupId>
     <artifactId>tornimo-spring-cloud</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <parseVersion>0.0.1-SNAPSHOT</parseVersion>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -13,11 +13,11 @@
     <url>https://github.com/tornimo/tornimo-spring-cloud</url>
 
     <properties>
-        <tornimo-spring-reporter.version>0.1.0</tornimo-spring-reporter.version>
+        <tornimo-spring-reporter.parseVersion>0.1.0</tornimo-spring-reporter.parseVersion>
         <project.encoding>UTF8</project.encoding>
 
-        <spock-core.version>1.1-groovy-2.4</spock-core.version>
-        <groovy-all.version>2.4.4</groovy-all.version>
+        <spock-core.parseVersion>1.1-groovy-2.4</spock-core.parseVersion>
+        <groovy-all.parseVersion>2.4.4</groovy-all.parseVersion>
     </properties>
 
     <prerequisites>
@@ -32,43 +32,43 @@
         <dependency>
             <groupId>io.tornimo</groupId>
             <artifactId>tornimo-spring-reporter</artifactId>
-            <version>${tornimo-spring-reporter.version}</version>
+            <parseVersion>${tornimo-spring-reporter.parseVersion}</parseVersion>
         </dependency>
 
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
-            <version>${spock-core.version}</version>
+            <parseVersion>${spock-core.parseVersion}</parseVersion>
             <scope>test</scope>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.spockframework</groupId>-->
 <!--            <artifactId>spock-spring</artifactId>-->
-<!--            <version>${spock-core.version}</version>-->
+<!--            <parseVersion>${spock-core.parseVersion}</parseVersion>-->
 <!--            <scope>test</scope>-->
 <!--        </dependency>-->
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>${groovy-all.version}</version>
+            <parseVersion>${groovy-all.parseVersion}</parseVersion>
             <scope>test</scope>
         </dependency>
         <dependency> <!-- enables mocking of classes (in addition to interfaces) -->
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.6.5</version>
+            <parseVersion>1.6.5</parseVersion>
             <scope>test</scope>
         </dependency>
         <dependency> <!-- enables mocking of classes without default constructor (together with CGLIB) -->
             <groupId>org.objenesis</groupId>
             <artifactId>objenesis</artifactId>
-            <version>2.5.1</version>
+            <parseVersion>2.5.1</parseVersion>
             <scope>test</scope>
         </dependency>
         <dependency> <!-- only required if Hamcrest matchers are used -->
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-core</artifactId>
-            <version>1.3</version>
+            <parseVersion>1.3</parseVersion>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -78,7 +78,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <parseVersion>3.8.1</parseVersion>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
@@ -87,7 +87,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <parseVersion>3.0.1</parseVersion>
                 <executions>
                     <execution>
                         <id>sources</id>
@@ -100,7 +100,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
+                <parseVersion>3.0.1</parseVersion>
                 <configuration>
                     <quiet>true</quiet>
                     <notimestamp>true</notimestamp>
@@ -120,7 +120,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
+                <parseVersion>1.6</parseVersion>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
@@ -140,7 +140,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
+                <parseVersion>1.6.8</parseVersion>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>sonatype-nexus-staging</serverId>

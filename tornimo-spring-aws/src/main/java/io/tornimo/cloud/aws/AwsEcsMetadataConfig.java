@@ -1,28 +1,28 @@
 package io.tornimo.cloud.aws;
 
-class AwsEcsMetadataConfig {
+public class AwsEcsMetadataConfig {
 
-    private final boolean cluster;
-    private final boolean version;
-    private final boolean containerInstanceArn;
+    private final boolean parseCluster;
+    private final boolean parseVersion;
+    private final boolean parseContainerInstanceArn;
 
-    AwsEcsMetadataConfig(boolean cluster,
-                         boolean version,
-                         boolean containerInstanceArn) {
-        this.cluster = cluster;
-        this.version = version;
-        this.containerInstanceArn = containerInstanceArn;
+    AwsEcsMetadataConfig(boolean parseCluster,
+                         boolean parseVersion,
+                         boolean parseContainerInstanceArn) {
+        this.parseCluster = parseCluster;
+        this.parseVersion = parseVersion;
+        this.parseContainerInstanceArn = parseContainerInstanceArn;
     }
 
-    public boolean isCluster() {
-        return cluster;
+    public boolean parseCluster() {
+        return parseCluster;
     }
 
-    public boolean isVersion() {
-        return version;
+    public boolean parseVersion() {
+        return parseVersion;
     }
 
-    public boolean isContainerInstanceArn() {
-        return containerInstanceArn;
+    public boolean parseContainerInstanceArn() {
+        return parseContainerInstanceArn;
     }
 }

@@ -1,6 +1,6 @@
 package io.tornimo.cloud.aws;
 
-class AwsArnConfig {
+public class AwsArnConfig {
 
     private final boolean partition;
     private final boolean service;
