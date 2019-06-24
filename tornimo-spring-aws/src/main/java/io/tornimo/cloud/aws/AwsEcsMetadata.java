@@ -3,11 +3,15 @@ package io.tornimo.cloud.aws;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class AwsEcsMetadata {
+public class AwsEcsMetadata {
 
     private static final Pattern CLUSTER_PATTERN = Pattern.compile(".*?\"Cluster\".*?:.*?\"(.*?)\".*?", Pattern.DOTALL);
     private static final Pattern VERSION_PATTERN = Pattern.compile(".*?\"Version\".*?:.*?\"(.*?)\".*?", Pattern.DOTALL);
     private static final Pattern CONTAINER_INSTANCE_ARN_PATTERN = Pattern.compile(".*?\"ContainerInstanceArn\".*?:.*?\"(.*?)\".*?", Pattern.DOTALL);
+
+    private static final Pattern CLUSTER_PATTERN_V3 = Pattern.compile(".*?\"Cluster\".*?:.*?\"(.*?)\".*?", Pattern.DOTALL);
+    private static final Pattern REVISION_PATTERN_V3 = Pattern.compile(".*?\"Revision\".*?:.*?\"(.*?)\".*?", Pattern.DOTALL);
+    private static final Pattern TASK_ARN_PATTERN_V3 = Pattern.compile(".*?\"TaskARN\".*?:.*?\"(.*?)\".*?", Pattern.DOTALL);
 
     private final String cluster;
     private final String version;
@@ -31,6 +35,40 @@ class AwsEcsMetadata {
 
     public AwsArn getAwsArn() {
         return awsArn;
+    }
+
+    public static AwsEcsMetadata formJsonV3(String json,
+                                            boolean parseCluster,
+                                            boolean parseRevision,
+                                            boolean parseTaskArn) {
+        Matcher matcher;
+        String version = "";
+        String cluster = "";
+        AwsArn awsArn = AwsArn.empty();
+
+        if (parseCluster) {
+            matcher = CLUSTER_PATTERN_V3.matcher(json);
+            throwIfNotMatched(json, "Cluster", matcher);
+            cluster = matcher.group(1).trim();
+            throwIfMissing(json, "Cluster", cluster);
+        }
+
+        if (parseTaskArn) {
+            matcher = TASK_ARN_PATTERN_V3.matcher(json);
+            throwIfNotMatched(json, "TaskARN", matcher);
+            String containerInstanceArn = matcher.group(1).trim();
+            throwIfMissing(json, "TaskARN", containerInstanceArn);
+            awsArn = AwsArn.fromString(containerInstanceArn);
+        }
+
+        if (parseRevision) {
+            matcher = REVISION_PATTERN_V3.matcher(json);
+            throwIfNotMatched(json, "Revision", matcher);
+            version = matcher.group(1).trim();
+            throwIfMissing(json, "Revision", version);
+        }
+
+        return new AwsEcsMetadata(cluster, version, awsArn);
     }
 
     public static AwsEcsMetadata formJson(String json,

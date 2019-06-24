@@ -3,7 +3,7 @@ package io.tornimo.cloud.aws
 
 import spock.lang.Specification
 
-class AwsEcsInstanceIdFactorySpock extends Specification {
+class AwsEcsEnvironmentDataFactorySpock extends Specification {
 
     def "parses all the data into instance id"() {
         given:
@@ -14,7 +14,7 @@ class AwsEcsInstanceIdFactorySpock extends Specification {
                     }"""
 
         when:
-        def instanceId = AwsEcsInstanceIdFactory.getInstanceId(
+        def instanceId = AwsEcsEnvironmentDataFactory.getEnvironmentData(
                 new AwsEcsMetadataConfig(
                         true,
                         true,
@@ -50,7 +50,7 @@ class AwsEcsInstanceIdFactorySpock extends Specification {
                     }"""
 
         when:
-        def instanceId = AwsEcsInstanceIdFactory.getInstanceId(
+        def instanceId = AwsEcsEnvironmentDataFactory.getEnvironmentData(
                 new AwsEcsMetadataConfig(
                         true,
                         true,
@@ -87,7 +87,7 @@ class AwsEcsInstanceIdFactorySpock extends Specification {
                     }"""
 
         when:
-        def instanceId = AwsEcsInstanceIdFactory.getInstanceId(
+        def instanceId = AwsEcsEnvironmentDataFactory.getEnvironmentData(
                 new AwsEcsMetadataConfig(
                         true,
                         true,
@@ -124,7 +124,7 @@ class AwsEcsInstanceIdFactorySpock extends Specification {
                     }"""
 
         when:
-        def instanceId = AwsEcsInstanceIdFactory.getInstanceId(
+        def instanceId = AwsEcsEnvironmentDataFactory.getEnvironmentData(
                 new AwsEcsMetadataConfig(
                         true,
                         true,

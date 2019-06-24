@@ -1,28 +1,37 @@
 package io.tornimo.cloud.aws;
 
-import io.tornimo.cloud.InstanceId;
-import io.tornimo.cloud.StaticInstanceId;
+import io.tornimo.cloud.StaticEnvironmentData;
+import io.tornimo.spring.autoconfigure.TornimoEnvironmentData;
 
 import java.io.InputStream;
 import java.net.URI;
 
-public class AwsEcsInstanceIdFactory {
+public class AwsEcsEnvironmentDataFactory {
 
-    public static InstanceId getInstanceId(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig) {
-        String service = "http://localhost:51678/v1/metadata";
+    public static TornimoEnvironmentData getEnvironmentDataV3(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig) {
+        String service = System.getenv("ECS_CONTAINER_METADATA_URI") + "/task";
         try (InputStream stream = new URI(service).toURL().openStream()) {
-            return getInstanceId(awsEcsMetadataConfig, awsArnConfig, IOUtils.toString(stream));
+            return getEnvironmentDataV3(awsEcsMetadataConfig, awsArnConfig, IOUtils.toString(stream));
         } catch (Exception e) {
             throw new RuntimeException("Failed to invoke " + service, e);
         }
     }
 
-    public static InstanceId getInstanceId(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig, boolean localOnFailure) {
+    public static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig) {
+        String service = "http://localhost:51678/v1/metadata";
+        try (InputStream stream = new URI(service).toURL().openStream()) {
+            return getEnvironmentData(awsEcsMetadataConfig, awsArnConfig, IOUtils.toString(stream));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to invoke " + service, e);
+        }
+    }
+
+    public static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig, boolean localOnFailure) {
         if (localOnFailure) {
             try {
-                return getInstanceId(awsEcsMetadataConfig, awsArnConfig);
+                return getEnvironmentData(awsEcsMetadataConfig, awsArnConfig);
             } catch (Exception e) {
-                return metadataToInstanceId(
+                return metadataToEnvironmentData(
                         new AwsEcsMetadata(
                                 "local_cluster",
                                 "local_version",
@@ -33,19 +42,29 @@ public class AwsEcsInstanceIdFactory {
                 );
             }
         } else {
-            return getInstanceId(awsEcsMetadataConfig, awsArnConfig);
+            return getEnvironmentData(awsEcsMetadataConfig, awsArnConfig);
         }
     }
 
-    static InstanceId getInstanceId(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig, String json) {
-        return metadataToInstanceId(
+    static TornimoEnvironmentData getEnvironmentDataV3(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig, String json) {
+        System.out.println("JSON: :" + json);
+        return metadataToEnvironmentData(
+                parseMetadataV3(json, awsEcsMetadataConfig),
+                awsEcsMetadataConfig,
+                awsArnConfig
+        );
+    }
+
+    static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig, String json) {
+        System.out.println("JSON: :" + json);
+        return metadataToEnvironmentData(
                 parseMetadata(json, awsEcsMetadataConfig),
                 awsEcsMetadataConfig,
                 awsArnConfig
         );
     }
 
-    static InstanceId metadataToInstanceId(AwsEcsMetadata metadata, AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig) {
+    static TornimoEnvironmentData metadataToEnvironmentData(AwsEcsMetadata metadata, AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig) {
         StringBuilder builder = new StringBuilder();
 
         AwsArn awsArn = metadata.getAwsArn();
@@ -61,15 +80,22 @@ public class AwsEcsInstanceIdFactory {
         appendIfNotEmpty(builder, metadata.getVersion(), awsEcsMetadataConfig.isVersion(), "", "version");
 
         String result = builder.toString();
+        System.out.println(result);
+        return new StaticEnvironmentData(result.substring(0, result.length() - 1));
+    }
 
-        return new StaticInstanceId(result.substring(0, result.length() - 1));
+    static AwsEcsMetadata parseMetadataV3(String json, AwsEcsMetadataConfig config) {
+        return AwsEcsMetadata.formJsonV3(json,
+                config.isCluster(), //Cluster
+                config.isVersion(), //Revision
+                config.isContainerInstanceArn()); //TaskARN
     }
 
     static AwsEcsMetadata parseMetadata(String json, AwsEcsMetadataConfig config) {
         return AwsEcsMetadata.formJson(json,
-                config.isCluster(),
-                config.isVersion(),
-                config.isContainerInstanceArn());
+                config.isCluster(), //Cluster
+                config.isVersion(), //Revision
+                config.isContainerInstanceArn()); //TaskARN
     }
 
     static void appendIfNotEmpty(StringBuilder builder,
