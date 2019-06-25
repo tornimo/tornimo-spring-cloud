@@ -9,7 +9,8 @@ final class IOUtils {
 
     private static final int DEFAULT_BUFFER_SIZE = 1024;
 
-    public static String toString(InputStream inputStream, Charset charset) {
+    public static String toString(InputStream inputStream,
+                                  Charset charset) {
         if (inputStream == null) {
             return "";
         }

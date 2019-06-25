@@ -8,7 +8,8 @@ import java.net.URI;
 
 public class AwsEcsV3EnvironmentDataFactory {
 
-    public static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig) {
+    public static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig,
+                                                            AwsArnConfig awsArnConfig) {
         String service = System.getenv("ECS_CONTAINER_METADATA_URI") + "/task";
         try (InputStream stream = new URI(service).toURL().openStream()) {
             return getEnvironmentData(awsEcsMetadataConfig, awsArnConfig, IOUtils.toString(stream));
@@ -17,7 +18,9 @@ public class AwsEcsV3EnvironmentDataFactory {
         }
     }
 
-    static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig, String json) {
+    static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig,
+                                                     AwsArnConfig awsArnConfig,
+                                                     String json) {
         return metadataToEnvironmentData(
                 parseMetadata(json, awsEcsMetadataConfig),
                 awsEcsMetadataConfig,
@@ -25,7 +28,9 @@ public class AwsEcsV3EnvironmentDataFactory {
         );
     }
 
-    static TornimoEnvironmentData metadataToEnvironmentData(AwsEcsMetadata metadata, AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig) {
+    static TornimoEnvironmentData metadataToEnvironmentData(AwsEcsMetadata metadata,
+                                                            AwsEcsMetadataConfig awsEcsMetadataConfig,
+                                                            AwsArnConfig awsArnConfig) {
         StringBuilder builder = new StringBuilder();
 
         AwsArn awsArn = metadata.getAwsArn();
@@ -41,10 +46,11 @@ public class AwsEcsV3EnvironmentDataFactory {
         appendIfNotEmpty(builder, metadata.getRevision(), awsEcsMetadataConfig.isRevision(), "", "version");
 
         String result = builder.toString();
-        return new TornimoStaticEnvironmentData("aws-ecs." + result.substring(0, result.length() - 1));
+        return new TornimoStaticEnvironmentData(result.substring(0, result.length() - 1));
     }
 
-    static AwsEcsMetadata parseMetadata(String json, AwsEcsMetadataConfig config) {
+    static AwsEcsMetadata parseMetadata(String json,
+                                        AwsEcsMetadataConfig config) {
         return AwsEcsMetadata.formJson(json,
                 config.isCluster(),
                 config.isRevision(),

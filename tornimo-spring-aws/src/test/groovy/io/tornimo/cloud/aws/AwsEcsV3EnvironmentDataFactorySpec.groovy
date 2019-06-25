@@ -12,7 +12,6 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
                 "arn:aws:elasticbeanstalk:us-east-1:123456789012:environment/My App/MyEnvironment"
         )
 
-
         when:
         def environmentData = AwsEcsV3EnvironmentDataFactory.getEnvironmentData(
                 new AwsEcsMetadataConfig(
@@ -46,7 +45,7 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
         given:
         def input = """{
                         "Cluster": "cluster",
-                        "Version": "revision"
+                        "Revision": "revision"
                     }"""
 
         when:
@@ -75,15 +74,15 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
         )
 
         then:
-        environmentData.environmentString == "partition.service.region.account.resourcetype.resource.qualifier.cluster.5"
+        environmentData.environmentString == "partition.service.region.account.resourcetype.resource.qualifier.cluster.revision"
     }
 
     def "takes defaults when data is not fully parsed"() {
         given:
         def input = """{
                         "Cluster": "cluster",
-                        "ContainerInstanceArn": "arn:aws:s3:::my_corporate_bucket/exampleobjectpng"
-                        "Version": "revision"
+                        "TaskARN": "arn:aws:s3:::my_corporate_bucket/exampleobjectpng"
+                        "Revision": "revision"
                     }"""
 
         when:
@@ -119,8 +118,8 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
         given:
         def input = """{
                         "Cluster": "cluster",
-                        "ContainerInstanceArn": "arn:aws:s3:::my_corporate_bucket/exampleobject.png"
-                        "Version": "revision"
+                        "TaskARN": "arn:aws:s3:::my_corporate_bucket/exampleobject.png"
+                        "Revision": "revision"
                     }"""
 
         when:

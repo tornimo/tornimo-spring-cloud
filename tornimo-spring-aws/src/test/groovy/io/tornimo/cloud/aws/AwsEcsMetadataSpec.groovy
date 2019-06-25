@@ -8,15 +8,15 @@ class AwsEcsMetadataSpec extends Specification {
         given:
         def input = """{
                         "Cluster": "default",
-                        "ContainerInstanceArn": "arn:aws:s3:::my_corporate_bucket/exampleobject.png",
-                        "Version": "Amazon ECS Agent - v1.29.0 (a190a73f)"
+                        "TaskARN": "arn:aws:s3:::my_corporate_bucket/exampleobject.png",
+                        "Revision": "Amazon ECS Agent - v1.29.0 (a190a73f)"
                     }"""
         def parseArn = true
         def parseCluster = true
-        def parsVersion = true
+        def parsRevision = true
 
         when:
-        def metadata = AwsEcsMetadata.formJson(input, parseCluster, parsVersion, parseArn)
+        def metadata = AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         metadata.getCluster() == "default"
@@ -28,15 +28,15 @@ class AwsEcsMetadataSpec extends Specification {
         given:
         def input = """{
                         "Cluster": "default",
-                        "ContainerInstanceArn": "arn:aws:s3:::my_corporate_bucket/exampleobject.png",
-                        "Version": "Amazon ECS Agent - v1.29.0 (a190a73f)"
+                        "TaskARN": "arn:aws:s3:::my_corporate_bucket/exampleobject.png",
+                        "Revision": "Amazon ECS Agent - v1.29.0 (a190a73f)"
                     }"""
         def parseArn = false
         def parseCluster = false
-        def parsVersion = false
+        def parsRevision = false
 
         when:
-        def metadata = AwsEcsMetadata.formJson(input, parseCluster, parsVersion, parseArn)
+        def metadata = AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         metadata.getCluster() == ""
@@ -48,19 +48,19 @@ class AwsEcsMetadataSpec extends Specification {
         given:
         def input = """{
                         "Cluster": "default",
-                        "ContainerInstanceArn": "invalid arn",
-                        "Version": "Amazon ECS Agent - v1.29.0 (a190a73f)"
+                        "TaskARN": "invalid arn",
+                        "Revision": "Amazon ECS Agent - v1.29.0 (a190a73f)"
                     }"""
         def parseArn = true
         def parseCluster = false
-        def parsVersion = false
+        def parsRevision = false
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsVersion, parseArn)
+        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
-        ex.message == "arn \"invalid arn\" could not be parsed."
+        ex.message == """arn "invalid arn" could not be parsed."""
     }
 
     def "ignores missing fields when parsing disabled"() {
@@ -69,10 +69,10 @@ class AwsEcsMetadataSpec extends Specification {
                     }"""
         def parseArn = false
         def parseCluster = false
-        def parsVersion = false
+        def parsRevision = false
 
         when:
-        def metadata = AwsEcsMetadata.formJson(input, parseCluster, parsVersion, parseArn)
+        def metadata = AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         metadata.getCluster() == ""
@@ -82,32 +82,32 @@ class AwsEcsMetadataSpec extends Specification {
 
     def "fails on missing fields when parseArn is true"() {
         given:
-        def input = """{"NoContainerInstanceArn":"no"}"""
+        def input = """{"NoTaskARN":"no"}"""
         def parseArn = true
         def parseCluster = false
-        def parsVersion = false
+        def parsRevision = false
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsVersion, parseArn)
+        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
-        ex.message == "\"ContainerInstanceArn\" not found in \"{\"NoContainerInstanceArn\":\"no\"}\""
+        ex.message == '"TaskARN" not found in "{"NoTaskARN":"no"}"'
     }
 
-    def "fails on missing fields when parseVersion is true"() {
+    def "fails on missing fields when parseRevision is true"() {
         given:
-        def input = """{"NoVersion":"no"}"""
+        def input = """{"NoRevision":"no"}"""
         def parseArn = false
         def parseCluster = false
-        def parsVersion = true
+        def parsRevision = true
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsVersion, parseArn)
+        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
-        ex.message == "\"Version\" not found in \"{\"NoVersion\":\"no\"}\""
+        ex.message == '"Revision" not found in "{"NoRevision":"no"}"'
     }
 
     def "fails on missing fields when parseCluster is true"() {
@@ -115,44 +115,44 @@ class AwsEcsMetadataSpec extends Specification {
         def input = """{"NoCluster":"no"}"""
         def parseArn = false
         def parseCluster = true
-        def parsVersion = false
+        def parsRevision = false
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsVersion, parseArn)
+        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
-        ex.message == "\"Cluster\" not found in \"{\"NoCluster\":\"no\"}\""
+        ex.message == '"Cluster" not found in "{"NoCluster":"no"}"'
     }
 
     def "fails on empty fields when parseArn is true"() {
         given:
-        def input = """{"ContainerInstanceArn":""}"""
+        def input = """{"TaskARN":""}"""
         def parseArn = true
         def parseCluster = false
-        def parsVersion = false
+        def parsRevision = false
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsVersion, parseArn)
+        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
-        ex.message == "\"ContainerInstanceArn\" is empty in \"{\"ContainerInstanceArn\":\"\"}\""
+        ex.message == '"TaskARN" is empty in "{"TaskARN":""}"'
     }
 
-    def "fails on empty fields when parseVersion is true"() {
+    def "fails on empty fields when parseRevision is true"() {
         given:
-        def input = """{"Version":""}"""
+        def input = """{"Revision":""}"""
         def parseArn = false
         def parseCluster = false
-        def parsVersion = true
+        def parsRevision = true
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsVersion, parseArn)
+        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
-        ex.message == "\"Version\" is empty in \"{\"Version\":\"\"}\""
+        ex.message == '"Revision" is empty in "{"Revision":""}"'
     }
 
     def "fails on empty fields when parseCluster is true"() {
@@ -160,13 +160,13 @@ class AwsEcsMetadataSpec extends Specification {
         def input = """{"Cluster":""}"""
         def parseArn = false
         def parseCluster = true
-        def parsVersion = false
+        def parsRevision = false
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsVersion, parseArn)
+        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
-        ex.message == "\"Cluster\" is empty in \"{\"Cluster\":\"\"}\""
+        ex.message == '"Cluster" is empty in "{"Cluster":""}"'
     }
 }

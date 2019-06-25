@@ -13,26 +13,6 @@ public class AwsEcsMetadata {
     private final String revision;
     private final AwsArn awsArn;
 
-    AwsEcsMetadata(String cluster,
-                   String revision,
-                   AwsArn awsArn) {
-        this.cluster = cluster;
-        this.revision = revision;
-        this.awsArn = awsArn;
-    }
-
-    public String getCluster() {
-        return cluster;
-    }
-
-    public String getRevision() {
-        return revision;
-    }
-
-    public AwsArn getAwsArn() {
-        return awsArn;
-    }
-
     public static AwsEcsMetadata formJson(String json,
                                           boolean parseCluster,
                                           boolean parseRevision,
@@ -67,13 +47,37 @@ public class AwsEcsMetadata {
         return new AwsEcsMetadata(cluster, revision, awsArn);
     }
 
-    private static void throwIfNotMatched(String json, String jsonField, Matcher matcher) {
+    AwsEcsMetadata(String cluster,
+                   String revision,
+                   AwsArn awsArn) {
+        this.cluster = cluster;
+        this.revision = revision;
+        this.awsArn = awsArn;
+    }
+
+    public String getCluster() {
+        return cluster;
+    }
+
+    public String getRevision() {
+        return revision;
+    }
+
+    public AwsArn getAwsArn() {
+        return awsArn;
+    }
+
+    private static void throwIfNotMatched(String json,
+                                          String jsonField,
+                                          Matcher matcher) {
         if (!matcher.matches()) {
             throw new IllegalArgumentException("\"" + jsonField + "\" not found in \"" + json + "\"");
         }
     }
 
-    private static void throwIfMissing(String json, String jsonField, String value) {
+    private static void throwIfMissing(String json,
+                                       String jsonField,
+                                       String value) {
         if (value.isEmpty()) {
             throw new IllegalArgumentException("\"" + jsonField + "\" is empty in \"" + json + "\"");
         }

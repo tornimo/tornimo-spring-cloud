@@ -24,7 +24,44 @@ public class AwsArn {
     private final String resource;
     private final String qualifier;
 
-    private AwsArn(String partition, String service, String region, String account, String resourceType, String resource, String qualifier) {
+    public static AwsArn fromString(String arn) {
+        String resourceType = "";
+        String resource = "";
+        String qualifier = "";
+
+        Matcher matcher = ARN_PATTERN.matcher(arn);
+        if (matcher.matches()) {
+            for (Pattern candidate : RESOURCE_PATTERN) {
+                Matcher resourceMatcher = candidate.matcher(matcher.group("resource"));
+                if (resourceMatcher.matches()) {
+                    resourceType = getGroupOrEmpty(resourceMatcher, "resourcetype");
+                    resource = getGroupOrEmpty(resourceMatcher, "resource");
+                    qualifier = getGroupOrEmpty(resourceMatcher, "qualifier");
+                    break;
+                }
+            }
+            String partition = matcher.group("partition");
+            String service = matcher.group("service");
+            String region = matcher.group("region");
+            String account = matcher.group("account");
+
+            return new AwsArn(partition, service, region, account, resourceType, resource, qualifier);
+        }
+
+        throw new IllegalArgumentException("arn \"" + arn + "\" could not be parsed.");
+    }
+
+    public static AwsArn empty() {
+        return new AwsArn("", "", "", "", "", "", "");
+    }
+
+    private AwsArn(String partition,
+                   String service,
+                   String region,
+                   String account,
+                   String resourceType,
+                   String resource,
+                   String qualifier) {
         this.partition = partition;
         this.service = service;
         this.region = region;
@@ -62,7 +99,7 @@ public class AwsArn {
         return qualifier;
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return partition.isEmpty() &&
                 service.isEmpty() &&
                 region.isEmpty() &&
@@ -72,38 +109,8 @@ public class AwsArn {
                 qualifier.isEmpty();
     }
 
-    public static AwsArn fromString(String arn) {
-        String resourceType = "";
-        String resource = "";
-        String qualifier = "";
-
-        Matcher matcher = ARN_PATTERN.matcher(arn);
-        if (matcher.matches()) {
-            for (Pattern candidate : RESOURCE_PATTERN) {
-                Matcher resourceMatcher = candidate.matcher(matcher.group("resource"));
-                if (resourceMatcher.matches()) {
-                    resourceType = getGroupOrEmpty(resourceMatcher, "resourcetype");
-                    resource = getGroupOrEmpty(resourceMatcher, "resource");
-                    qualifier = getGroupOrEmpty(resourceMatcher, "qualifier");
-                    break;
-                }
-            }
-            String partition = matcher.group("partition");
-            String service = matcher.group("service");
-            String region = matcher.group("region");
-            String account = matcher.group("account");
-
-            return new AwsArn(partition, service, region, account, resourceType, resource, qualifier);
-        }
-
-        throw new IllegalArgumentException("arn \"" + arn + "\" could not be parsed.");
-    }
-
-    public static AwsArn empty() {
-        return new AwsArn("", "", "", "", "", "", "");
-    }
-
-    private static String getGroupOrEmpty(Matcher matcher, String name) {
+    private static String getGroupOrEmpty(Matcher matcher,
+                                          String name) {
         try {
             return matcher.group(name);
         } catch (IllegalArgumentException e) {
