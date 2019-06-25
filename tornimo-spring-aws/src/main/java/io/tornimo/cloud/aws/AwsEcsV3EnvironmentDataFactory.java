@@ -1,24 +1,15 @@
 package io.tornimo.cloud.aws;
 
-import io.tornimo.cloud.StaticEnvironmentData;
-import io.tornimo.spring.autoconfigure.TornimoEnvironmentData;
+import io.tornimo.TornimoEnvironmentData;
+import io.tornimo.TornimoStaticEnvironmentData;
 
 import java.io.InputStream;
 import java.net.URI;
 
-public class AwsEcsEnvironmentDataFactory {
-
-    public static TornimoEnvironmentData getEnvironmentDataV3(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig) {
-        String service = System.getenv("ECS_CONTAINER_METADATA_URI") + "/task";
-        try (InputStream stream = new URI(service).toURL().openStream()) {
-            return getEnvironmentDataV3(awsEcsMetadataConfig, awsArnConfig, IOUtils.toString(stream));
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to invoke " + service, e);
-        }
-    }
+public class AwsEcsV3EnvironmentDataFactory {
 
     public static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig) {
-        String service = "http://localhost:51678/v1/metadata";
+        String service = System.getenv("ECS_CONTAINER_METADATA_URI") + "/task";
         try (InputStream stream = new URI(service).toURL().openStream()) {
             return getEnvironmentData(awsEcsMetadataConfig, awsArnConfig, IOUtils.toString(stream));
         } catch (Exception e) {
@@ -26,37 +17,7 @@ public class AwsEcsEnvironmentDataFactory {
         }
     }
 
-    public static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig, boolean localOnFailure) {
-        if (localOnFailure) {
-            try {
-                return getEnvironmentData(awsEcsMetadataConfig, awsArnConfig);
-            } catch (Exception e) {
-                return metadataToEnvironmentData(
-                        new AwsEcsMetadata(
-                                "local_cluster",
-                                "local_version",
-                                AwsArn.fromString("arn:partition:service:region:account:resource")
-                        ),
-                        awsEcsMetadataConfig,
-                        awsArnConfig
-                );
-            }
-        } else {
-            return getEnvironmentData(awsEcsMetadataConfig, awsArnConfig);
-        }
-    }
-
-    static TornimoEnvironmentData getEnvironmentDataV3(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig, String json) {
-        System.out.println("JSON: :" + json);
-        return metadataToEnvironmentData(
-                parseMetadataV3(json, awsEcsMetadataConfig),
-                awsEcsMetadataConfig,
-                awsArnConfig
-        );
-    }
-
     static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig, AwsArnConfig awsArnConfig, String json) {
-        System.out.println("JSON: :" + json);
         return metadataToEnvironmentData(
                 parseMetadata(json, awsEcsMetadataConfig),
                 awsEcsMetadataConfig,
@@ -77,25 +38,17 @@ public class AwsEcsEnvironmentDataFactory {
         appendIfNotEmpty(builder, awsArn.getQualifier(), awsArnConfig.isQualifier(), awsArnConfig.getDefaultQualifier(), "qualifier");
 
         appendIfNotEmpty(builder, metadata.getCluster(), awsEcsMetadataConfig.isCluster(), "", "cluster");
-        appendIfNotEmpty(builder, metadata.getVersion(), awsEcsMetadataConfig.isVersion(), "", "version");
+        appendIfNotEmpty(builder, metadata.getRevision(), awsEcsMetadataConfig.isRevision(), "", "version");
 
         String result = builder.toString();
-        System.out.println(result);
-        return new StaticEnvironmentData(result.substring(0, result.length() - 1));
-    }
-
-    static AwsEcsMetadata parseMetadataV3(String json, AwsEcsMetadataConfig config) {
-        return AwsEcsMetadata.formJsonV3(json,
-                config.isCluster(), //Cluster
-                config.isVersion(), //Revision
-                config.isContainerInstanceArn()); //TaskARN
+        return new TornimoStaticEnvironmentData("aws-ecs." + result.substring(0, result.length() - 1));
     }
 
     static AwsEcsMetadata parseMetadata(String json, AwsEcsMetadataConfig config) {
         return AwsEcsMetadata.formJson(json,
-                config.isCluster(), //Cluster
-                config.isVersion(), //Revision
-                config.isContainerInstanceArn()); //TaskARN
+                config.isCluster(),
+                config.isRevision(),
+                config.isTaskArn());
     }
 
     static void appendIfNotEmpty(StringBuilder builder,
@@ -114,4 +67,3 @@ public class AwsEcsEnvironmentDataFactory {
         }
     }
 }
-

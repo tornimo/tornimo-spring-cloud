@@ -3,26 +3,26 @@ package io.tornimo.cloud.aws;
 public class AwsEcsMetadataConfig {
 
     private final boolean cluster;
-    private final boolean version;
-    private final boolean containerInstanceArn;
+    private final boolean revision;
+    private final boolean taskArn;
 
     public AwsEcsMetadataConfig(boolean cluster,
-                                boolean version,
-                                boolean containerInstanceArn) {
+                                boolean revision,
+                                boolean taskArn) {
         this.cluster = cluster;
-        this.version = version;
-        this.containerInstanceArn = containerInstanceArn;
+        this.revision = revision;
+        this.taskArn = taskArn;
     }
 
     public boolean isCluster() {
         return cluster;
     }
 
-    public boolean isVersion() {
-        return version;
+    public boolean isRevision() {
+        return revision;
     }
 
-    public boolean isContainerInstanceArn() {
-        return containerInstanceArn;
+    public boolean isTaskArn() {
+        return taskArn;
     }
 }

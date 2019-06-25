@@ -20,7 +20,7 @@ class AwsEcsMetadataSpec extends Specification {
 
         then:
         metadata.getCluster() == "default"
-        metadata.getVersion() == "Amazon ECS Agent - v1.29.0 (a190a73f)"
+        metadata.getRevision() == "Amazon ECS Agent - v1.29.0 (a190a73f)"
         !metadata.getAwsArn().isEmpty()
     }
 
@@ -40,7 +40,7 @@ class AwsEcsMetadataSpec extends Specification {
 
         then:
         metadata.getCluster() == ""
-        metadata.getVersion() == ""
+        metadata.getRevision() == ""
         metadata.getAwsArn().isEmpty()
     }
 
@@ -76,7 +76,7 @@ class AwsEcsMetadataSpec extends Specification {
 
         then:
         metadata.getCluster() == ""
-        metadata.getVersion() == ""
+        metadata.getRevision() == ""
         metadata.getAwsArn().isEmpty()
     }
 
