@@ -83,13 +83,13 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <argLine>--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED
-                        --add-opens java.base/java.nio.channels=ALL-UNNAMED --add-opens
-                        java.base/java.util.concurrent.locks=ALL-UNNAMED --add-opens
-                        jdk.management/com.sun.management.internal=ALL-UNNAMED --add-opens
-                        jdk.unsupported/sun.misc=ALL-UNNAMED --add-modules java.xml.bind --add-modules
-                        java.xml.ws.annotation --add-modules jdk.attach
-                    </argLine>
+<!--                    <argLine>&#45;&#45;add-opens java.base/java.lang=ALL-UNNAMED &#45;&#45;add-opens java.base/sun.nio.ch=ALL-UNNAMED-->
+<!--                        &#45;&#45;add-opens java.base/java.nio.channels=ALL-UNNAMED &#45;&#45;add-opens-->
+<!--                        java.base/java.util.concurrent.locks=ALL-UNNAMED &#45;&#45;add-opens-->
+<!--                        jdk.management/com.sun.management.internal=ALL-UNNAMED &#45;&#45;add-opens-->
+<!--                        jdk.unsupported/sun.misc=ALL-UNNAMED &#45;&#45;add-modules java.xml.bind &#45;&#45;add-modules-->
+<!--                        java.xml.ws.annotation &#45;&#45;add-modules jdk.attach-->
+<!--                    </argLine>-->
                     <!-- spock - surefire integration (different patterns of test file names) -->
                     <includes>
                         <include>**/*Test.java</include>

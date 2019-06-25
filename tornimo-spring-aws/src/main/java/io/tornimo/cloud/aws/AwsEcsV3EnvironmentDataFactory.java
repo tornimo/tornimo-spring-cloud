@@ -46,6 +46,7 @@ public class AwsEcsV3EnvironmentDataFactory {
         appendIfNotEmpty(builder, metadata.getRevision(), awsEcsMetadataConfig.isRevision(), "", "version");
 
         String result = builder.toString();
+
         return new TornimoStaticEnvironmentData(result.substring(0, result.length() - 1));
     }
 

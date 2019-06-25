@@ -31,21 +31,36 @@ public class TornimoAwsEcsV3AutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AwsArnConfig awsArnConfig() {
+        boolean partition = false;
+        boolean service = false;
+        boolean region = true;
+        boolean account = false;
+        boolean resourceType = true;
+        boolean resource = true;
+        boolean qualifier = true;
+        String defaultPartition = "";
+        String defaultService = "";
+        String defaultRegion = "region-none";
+        String defaultAccount = "";
+        String defaultResourceType = "resourcetype-none";
+        String defaultResource = "resource-none";
+        String defaultQualifier = "qualifier-none";
+
         return new AwsArnConfig(
-                false,
-                false,
-                true,
-                false,
-                true,
-                true,
-                true,
-                "",
-                "",
-                "region-none",
-                "",
-                "resourcetype-none",
-                "resource-none",
-                "qualifier-none"
+                partition,
+                service,
+                region,
+                account,
+                resourceType,
+                resource,
+                qualifier,
+                defaultPartition,
+                defaultService,
+                defaultRegion,
+                defaultAccount,
+                defaultResourceType,
+                defaultResource,
+                defaultQualifier
         );
     }
 
