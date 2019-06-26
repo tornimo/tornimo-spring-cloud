@@ -25,7 +25,7 @@ public class TornimoAwsEcsV3AutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AwsEcsMetadataConfig awsEcsMetadataConfig() {
-        return new AwsEcsMetadataConfig(false, true, true);
+        return new AwsEcsMetadataConfig(false, false, true);
     }
 
     @Bean
@@ -35,14 +35,14 @@ public class TornimoAwsEcsV3AutoConfiguration {
         boolean service = false;
         boolean region = true;
         boolean account = false;
-        boolean resourceType = true;
+        boolean resourceType = false;
         boolean resource = true;
         boolean qualifier = true;
         String defaultPartition = "";
         String defaultService = "";
         String defaultRegion = "region-none";
         String defaultAccount = "";
-        String defaultResourceType = "resourcetype-none";
+        String defaultResourceType = "";
         String defaultResource = "resource-none";
         String defaultQualifier = "qualifier-none";
 

@@ -38,7 +38,7 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
         )
 
         then:
-        environmentData.environmentString == "aws.elasticbeanstalk.us-east-1.123456789012.environment.My App.MyEnvironment.default.5"
+        environmentData.environmentString == "aws-ecs.aws.elasticbeanstalk.us-east-1.123456789012.environment.My App.MyEnvironment.default.5"
     }
 
     def "takes defaults when data is not parsed"() {
@@ -74,7 +74,7 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
         )
 
         then:
-        environmentData.environmentString == "partition.service.region.account.resourcetype.resource.qualifier.cluster.revision"
+        environmentData.environmentString == "aws-ecs.partition.service.region.account.resourcetype.resource.qualifier.cluster.revision"
     }
 
     def "takes defaults when data is not fully parsed"() {
@@ -111,7 +111,7 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
         )
 
         then:
-        environmentData.environmentString == "aws.s3.region.account.my_corporate_bucket.exampleobjectpng.qualifier.cluster.revision"
+        environmentData.environmentString == "aws-ecs.aws.s3.region.account.my_corporate_bucket.exampleobjectpng.qualifier.cluster.revision"
     }
 
     def "escapes dots"() {
@@ -148,7 +148,7 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
         )
 
         then:
-        environmentData.environmentString == "aws.s3.region.account_acc.my_corporate_bucket.exampleobject_png.qualifier.cluster.revision"
+        environmentData.environmentString == "aws-ecs.aws.s3.region.account_acc.my_corporate_bucket.exampleobject_png.qualifier.cluster.revision"
     }
 
 }

@@ -8,6 +8,8 @@ import java.net.URI;
 
 public class AwsEcsV3EnvironmentDataFactory {
 
+    private static final String TOOL_PREFIX = "aws-ecs";
+
     public static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig,
                                                             AwsArnConfig awsArnConfig) {
         String service = System.getenv("ECS_CONTAINER_METADATA_URI") + "/task";
@@ -47,7 +49,7 @@ public class AwsEcsV3EnvironmentDataFactory {
 
         String result = builder.toString();
 
-        return new TornimoStaticEnvironmentData(result.substring(0, result.length() - 1));
+        return new TornimoStaticEnvironmentData(TOOL_PREFIX + "." + result.substring(0, result.length() - 1));
     }
 
     static AwsEcsMetadata parseMetadata(String json,
