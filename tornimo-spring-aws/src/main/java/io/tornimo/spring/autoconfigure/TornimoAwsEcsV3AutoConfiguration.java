@@ -16,10 +16,10 @@ import org.springframework.context.annotation.Configuration;
         TornimoMetricsExportAutoConfiguration.class
 })
 @ConditionalOnProperty(
-        prefix = "tornimo.aws.ecs.v3",
+        prefix = "tornimo.aws-ecs-v3",
         name = "enabled",
         havingValue = "true")
-@EnableConfigurationProperties(TornimoProperties.class)
+@EnableConfigurationProperties(TornimoAwsEcsV3Properties.class)
 public class TornimoAwsEcsV3AutoConfiguration {
 
     @Bean
