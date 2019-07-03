@@ -28,7 +28,7 @@ Maven:
 <dependency>
     <groupId>io.tornimo</groupId>
     <artifactId>tornimo-spring-reporter</artifactId>
-    <version>0.1.0</version>tornimo-spring-reporter
+    <version>0.2.1</version>
 </dependency>
 ```
 Gradle:
