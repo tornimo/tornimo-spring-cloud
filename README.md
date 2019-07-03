@@ -33,7 +33,7 @@ Maven:
 ```
 Gradle:
 ```
-compile group: 'io.tornimo', name: 'tornimo-spring-reporter', version: '0.1.0'
+compile group: 'io.tornimo', name: 'tornimo-spring-reporter', version: '0.2.1'
 ```
 
 ## tornimo-spring-aws
