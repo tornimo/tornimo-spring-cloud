@@ -76,20 +76,8 @@
                         <artifactId>surefire-junit47</artifactId>
                         <version>2.21.0</version>
                     </dependency>
-<!--                    <dependency>-->
-<!--                        <groupId>org.apache.maven.surefire</groupId>-->
-<!--                        <artifactId>surefire-testng</artifactId>-->
-<!--                        <version>2.21.0</version>-->
-<!--                    </dependency>-->
                 </dependencies>
                 <configuration>
-                    <!--                    <argLine>&#45;&#45;add-opens java.base/java.lang=ALL-UNNAMED &#45;&#45;add-opens java.base/sun.nio.ch=ALL-UNNAMED-->
-                    <!--                        &#45;&#45;add-opens java.base/java.nio.channels=ALL-UNNAMED &#45;&#45;add-opens-->
-                    <!--                        java.base/java.util.concurrent.locks=ALL-UNNAMED &#45;&#45;add-opens-->
-                    <!--                        jdk.management/com.sun.management.internal=ALL-UNNAMED &#45;&#45;add-opens-->
-                    <!--                        jdk.unsupported/sun.misc=ALL-UNNAMED &#45;&#45;add-modules java.xml.bind &#45;&#45;add-modules-->
-                    <!--                        java.xml.ws.annotation &#45;&#45;add-modules jdk.attach-->
-                    <!--                    </argLine>-->
                     <!-- spock - surefire integration (different patterns of test file names) -->
                     <includes>
                         <include>**/*Test.java</include>
