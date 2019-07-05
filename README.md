@@ -48,7 +48,7 @@ To configure the plugin all you have to do is add this dependency to your maven 
 <dependency>
     <groupId>io.tornimo</groupId>
     <artifactId>tornimo-spring-aws</artifactId>
-    <version>0.1.0</version>
+    <version>0.3.0</version>
 </dependency
 ```
 or for gradle project:
