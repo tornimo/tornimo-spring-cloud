@@ -3,7 +3,7 @@ package io.tornimo.cloud.aws
 
 import spock.lang.Specification
 
-class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
+class AwsEcsEnvironmentDataFactorySpec extends Specification {
 
     def "parses all the data into instance id"() {
         given:
@@ -13,7 +13,7 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
         )
 
         when:
-        def environmentData = AwsEcsV3EnvironmentDataFactory.getEnvironmentData(
+        def environmentData = AwsEcsEnvironmentDataFactory.getEnvironmentData(
                 new AwsEcsMetadataConfig(
                         true,
                         true,
@@ -49,7 +49,7 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
                     }"""
 
         when:
-        def environmentData = AwsEcsV3EnvironmentDataFactory.getEnvironmentData(
+        def environmentData = AwsEcsEnvironmentDataFactory.getEnvironmentData(
                 new AwsEcsMetadataConfig(
                         true,
                         true,
@@ -86,7 +86,7 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
                     }"""
 
         when:
-        def environmentData = AwsEcsV3EnvironmentDataFactory.getEnvironmentData(
+        def environmentData = AwsEcsEnvironmentDataFactory.getEnvironmentData(
                 new AwsEcsMetadataConfig(
                         true,
                         true,
@@ -123,7 +123,7 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
                     }"""
 
         when:
-        def environmentData = AwsEcsV3EnvironmentDataFactory.getEnvironmentData(
+        def environmentData = AwsEcsEnvironmentDataFactory.getEnvironmentData(
                 new AwsEcsMetadataConfig(
                         true,
                         true,
@@ -151,4 +151,44 @@ class AwsEcsV3EnvironmentDataFactorySpec extends Specification {
         environmentData.environmentString == "aws-ecs.aws.s3.region.account_acc.my_corporate_bucket.exampleobject_png.qualifier.cluster.revision"
     }
 
+    def "queries endpoint and returns expected result"() {
+        given:
+        def input = """{
+                        "Cluster": "cluster",
+                        "TaskARN": "arn:aws:s3:::my_corporate_bucket/exampleobject.png"
+                        "Revision": "revision"
+                    }"""
+        when:
+        def environmentData = AwsEcsEnvironmentDataFactory.getEnvironmentData(
+                new AwsEcsMetadataConfig(
+                        true,
+                        true,
+                        true),
+                new AwsArnConfig(
+                        true,
+                        true,
+                        true,
+                        true,
+                        true,
+                        true,
+                        true,
+                        "partition",
+                        "service",
+                        "region",
+                        "account.acc",
+                        "resourcetype",
+                        "resource",
+                        "qualifier"
+                ),
+                new AwsEndpoint() {
+                    @Override
+                    String query() {
+                        return input
+                    }
+                }
+        )
+
+        then:
+        environmentData.environmentString == "aws-ecs.aws.s3.region.account_acc.my_corporate_bucket.exampleobject_png.qualifier.cluster.revision"
+    }
 }

@@ -2,16 +2,16 @@ package io.tornimo.spring.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "tornimo.aws-ecs-v3")
-public class TornimoAwsEcsV3Properties {
+@ConfigurationProperties(prefix = "tornimo.aws-ecs-v2")
+public class TornimoAwsEcsV2Properties {
 
     private boolean enabled;
 
-    public TornimoAwsEcsV3Properties() {
+    public TornimoAwsEcsV2Properties() {
         this(false);
     }
 
-    public TornimoAwsEcsV3Properties(boolean enabled) {
+    public TornimoAwsEcsV2Properties(boolean enabled) {
         this.enabled = enabled;
     }
 

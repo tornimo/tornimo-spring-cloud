@@ -14,11 +14,11 @@ import org.springframework.context.annotation.Configuration;
         TornimoMetricsExportAutoConfiguration.class
 })
 @ConditionalOnProperty(
-        prefix = "tornimo.aws-ecs-v3",
+        prefix = "tornimo.aws-ecs-v2",
         name = "enabled",
         havingValue = "true")
-@EnableConfigurationProperties(TornimoAwsEcsV3Properties.class)
-public class TornimoAwsEcsV3AutoConfiguration {
+@EnableConfigurationProperties(TornimoAwsEcsV2Properties.class)
+public class TornimoAwsEcsV2AutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
@@ -43,6 +43,6 @@ public class TornimoAwsEcsV3AutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AwsEndpoint tornimoAwsEndpoint() {
-        return new AwsEcsV3Endpoint();
+        return new AwsEcsV2Endpoint();
     }
 }

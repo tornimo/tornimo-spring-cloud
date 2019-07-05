@@ -3,21 +3,14 @@ package io.tornimo.cloud.aws;
 import io.tornimo.TornimoEnvironmentData;
 import io.tornimo.TornimoStaticEnvironmentData;
 
-import java.io.InputStream;
-import java.net.URI;
-
-public class AwsEcsV3EnvironmentDataFactory {
+public class AwsEcsEnvironmentDataFactory {
 
     private static final String TOOL_PREFIX = "aws-ecs";
 
     public static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig,
-                                                            AwsArnConfig awsArnConfig) {
-        String service = System.getenv("ECS_CONTAINER_METADATA_URI") + "/task";
-        try (InputStream stream = new URI(service).toURL().openStream()) {
-            return getEnvironmentData(awsEcsMetadataConfig, awsArnConfig, IOUtils.toString(stream));
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to invoke " + service, e);
-        }
+                                                            AwsArnConfig awsArnConfig,
+                                                            AwsEndpoint awsEndpoint) {
+        return getEnvironmentData(awsEcsMetadataConfig, awsArnConfig, awsEndpoint.query());
     }
 
     static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig,
