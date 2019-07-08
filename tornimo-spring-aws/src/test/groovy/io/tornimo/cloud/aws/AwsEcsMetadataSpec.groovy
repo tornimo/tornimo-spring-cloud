@@ -16,7 +16,7 @@ class AwsEcsMetadataSpec extends Specification {
         def parsRevision = true
 
         when:
-        def metadata = AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
+        def metadata = AwsEcsMetadata.fromJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         metadata.getCluster() == "default"
@@ -36,7 +36,7 @@ class AwsEcsMetadataSpec extends Specification {
         def parsRevision = false
 
         when:
-        def metadata = AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
+        def metadata = AwsEcsMetadata.fromJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         metadata.getCluster() == ""
@@ -56,7 +56,7 @@ class AwsEcsMetadataSpec extends Specification {
         def parsRevision = false
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
+        AwsEcsMetadata.fromJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
@@ -72,7 +72,7 @@ class AwsEcsMetadataSpec extends Specification {
         def parsRevision = false
 
         when:
-        def metadata = AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
+        def metadata = AwsEcsMetadata.fromJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         metadata.getCluster() == ""
@@ -88,7 +88,7 @@ class AwsEcsMetadataSpec extends Specification {
         def parsRevision = false
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
+        AwsEcsMetadata.fromJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
@@ -103,7 +103,7 @@ class AwsEcsMetadataSpec extends Specification {
         def parsRevision = true
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
+        AwsEcsMetadata.fromJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
@@ -118,7 +118,7 @@ class AwsEcsMetadataSpec extends Specification {
         def parsRevision = false
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
+        AwsEcsMetadata.fromJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
@@ -133,7 +133,7 @@ class AwsEcsMetadataSpec extends Specification {
         def parsRevision = false
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
+        AwsEcsMetadata.fromJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
@@ -148,7 +148,7 @@ class AwsEcsMetadataSpec extends Specification {
         def parsRevision = true
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
+        AwsEcsMetadata.fromJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)
@@ -163,7 +163,7 @@ class AwsEcsMetadataSpec extends Specification {
         def parsRevision = false
 
         when:
-        AwsEcsMetadata.formJson(input, parseCluster, parsRevision, parseArn)
+        AwsEcsMetadata.fromJson(input, parseCluster, parsRevision, parseArn)
 
         then:
         def ex = thrown(IllegalArgumentException)

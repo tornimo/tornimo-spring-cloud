@@ -2,11 +2,11 @@ package io.tornimo.cloud.aws;
 
 public class AppendUtils {
 
-    static void appendIfNotEmpty(StringBuilder builder,
-                                 String value,
-                                 boolean enabled,
-                                 String defaultValue,
-                                 String fieldName) {
+    static void appendIfNotEmptyAndEnabled(StringBuilder builder,
+                                           String value,
+                                           boolean enabled,
+                                           String defaultValue,
+                                           String fieldName) {
         if (enabled) {
             if (!value.trim().isEmpty()) {
                 builder.append(value.replace(".", "_")).append(".");
@@ -18,10 +18,10 @@ public class AppendUtils {
         }
     }
 
-    static void appendIfNotEmpty(StringBuilder builder,
-                                 String value,
-                                 boolean enabled,
-                                 String fieldName) {
+    static void appendIfNotEmptyAndEnabled(StringBuilder builder,
+                                           String value,
+                                           boolean enabled,
+                                           String fieldName) {
         if (enabled) {
             if (!value.trim().isEmpty()) {
                 builder.append(value.replace(".", "_")).append(".");

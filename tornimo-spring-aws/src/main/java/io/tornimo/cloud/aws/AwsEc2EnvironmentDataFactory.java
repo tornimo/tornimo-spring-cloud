@@ -22,11 +22,11 @@ public class AwsEc2EnvironmentDataFactory {
         String instanceId = awsEc2Metadata.getInstanceId();
         String account = awsEc2Metadata.getAccount();
 
-        AppendUtils.appendIfNotEmpty(builder, region, awsEc2MetadataConfig.isRegion(), "region");
-        AppendUtils.appendIfNotEmpty(builder, availabilityZone, awsEc2MetadataConfig.isAvailabilityZone(), "availabilityZone");
-        AppendUtils.appendIfNotEmpty(builder, account, awsEc2MetadataConfig.isAccount(), "account");
-        AppendUtils.appendIfNotEmpty(builder, instanceType, awsEc2MetadataConfig.isInstanceType(), "instanceType");
-        AppendUtils.appendIfNotEmpty(builder, instanceId, awsEc2MetadataConfig.isInstanceId(), "instanceId");
+        AppendUtils.appendIfNotEmptyAndEnabled(builder, region, awsEc2MetadataConfig.isRegion(), "region");
+        AppendUtils.appendIfNotEmptyAndEnabled(builder, availabilityZone, awsEc2MetadataConfig.isAvailabilityZone(), "availabilityZone");
+        AppendUtils.appendIfNotEmptyAndEnabled(builder, account, awsEc2MetadataConfig.isAccount(), "account");
+        AppendUtils.appendIfNotEmptyAndEnabled(builder, instanceType, awsEc2MetadataConfig.isInstanceType(), "instanceType");
+        AppendUtils.appendIfNotEmptyAndEnabled(builder, instanceId, awsEc2MetadataConfig.isInstanceId(), "instanceId");
 
         return new TornimoStaticEnvironmentData(AppendUtils.appendPrefix(TOOL_PREFIX, builder.toString()));
     }

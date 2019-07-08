@@ -13,7 +13,7 @@ public class AwsEcsMetadata {
     private final String revision;
     private final AwsArn awsArn;
 
-    public static AwsEcsMetadata formJson(String json,
+    public static AwsEcsMetadata fromJson(String json,
                                           boolean parseCluster,
                                           boolean parseRevision,
                                           boolean parseTaskArn) {
