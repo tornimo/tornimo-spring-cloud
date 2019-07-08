@@ -9,8 +9,8 @@ public class AwsEcsEnvironmentDataFactory {
 
     public static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig,
                                                             AwsArnConfig awsArnConfig,
-                                                            AwsEndpoint awsEndpoint) {
-        return getEnvironmentData(awsEcsMetadataConfig, awsArnConfig, awsEndpoint.query());
+                                                            AwsEcsEndpoint awsEcsEndpoint) {
+        return getEnvironmentData(awsEcsMetadataConfig, awsArnConfig, awsEcsEndpoint.query());
     }
 
     static TornimoEnvironmentData getEnvironmentData(AwsEcsMetadataConfig awsEcsMetadataConfig,
@@ -29,20 +29,18 @@ public class AwsEcsEnvironmentDataFactory {
         StringBuilder builder = new StringBuilder();
 
         AwsArn awsArn = metadata.getAwsArn();
-        appendIfNotEmpty(builder, awsArn.getPartition(), awsArnConfig.isPartition(), awsArnConfig.getDefaultPartition(), "partition");
-        appendIfNotEmpty(builder, awsArn.getService(), awsArnConfig.isService(), awsArnConfig.getDefaultService(), "service");
-        appendIfNotEmpty(builder, awsArn.getRegion(), awsArnConfig.isRegion(), awsArnConfig.getDefaultRegion(), "region");
-        appendIfNotEmpty(builder, metadata.getAwsArn().getAccount(), awsArnConfig.isAccount(), awsArnConfig.getDefaultAccount(), "account");
-        appendIfNotEmpty(builder, awsArn.getResourceType(), awsArnConfig.isResourceType(), awsArnConfig.getDefaultResourceType(), "resourcetype");
-        appendIfNotEmpty(builder, awsArn.getResource(), awsArnConfig.isResource(), awsArnConfig.getDefaultResource(), "resource");
-        appendIfNotEmpty(builder, awsArn.getQualifier(), awsArnConfig.isQualifier(), awsArnConfig.getDefaultQualifier(), "qualifier");
+        AppendUtils.appendIfNotEmpty(builder, awsArn.getPartition(), awsArnConfig.isPartition(), awsArnConfig.getDefaultPartition(), "partition");
+        AppendUtils.appendIfNotEmpty(builder, awsArn.getService(), awsArnConfig.isService(), awsArnConfig.getDefaultService(), "service");
+        AppendUtils.appendIfNotEmpty(builder, awsArn.getRegion(), awsArnConfig.isRegion(), awsArnConfig.getDefaultRegion(), "region");
+        AppendUtils.appendIfNotEmpty(builder, metadata.getAwsArn().getAccount(), awsArnConfig.isAccount(), awsArnConfig.getDefaultAccount(), "account");
+        AppendUtils.appendIfNotEmpty(builder, awsArn.getResourceType(), awsArnConfig.isResourceType(), awsArnConfig.getDefaultResourceType(), "resourcetype");
+        AppendUtils.appendIfNotEmpty(builder, awsArn.getResource(), awsArnConfig.isResource(), awsArnConfig.getDefaultResource(), "resource");
+        AppendUtils.appendIfNotEmpty(builder, awsArn.getQualifier(), awsArnConfig.isQualifier(), awsArnConfig.getDefaultQualifier(), "qualifier");
 
-        appendIfNotEmpty(builder, metadata.getCluster(), awsEcsMetadataConfig.isCluster(), "", "cluster");
-        appendIfNotEmpty(builder, metadata.getRevision(), awsEcsMetadataConfig.isRevision(), "", "version");
+        AppendUtils.appendIfNotEmpty(builder, metadata.getCluster(), awsEcsMetadataConfig.isCluster(), "", "cluster");
+        AppendUtils.appendIfNotEmpty(builder, metadata.getRevision(), awsEcsMetadataConfig.isRevision(), "", "version");
 
-        String result = builder.toString();
-
-        return new TornimoStaticEnvironmentData(TOOL_PREFIX + "." + result.substring(0, result.length() - 1));
+        return new TornimoStaticEnvironmentData(AppendUtils.appendPrefix(TOOL_PREFIX, builder.toString()));
     }
 
     static AwsEcsMetadata parseMetadata(String json,
@@ -51,21 +49,5 @@ public class AwsEcsEnvironmentDataFactory {
                 config.isCluster(),
                 config.isRevision(),
                 config.isTaskArn());
-    }
-
-    static void appendIfNotEmpty(StringBuilder builder,
-                                 String value,
-                                 boolean enabled,
-                                 String defaultValue,
-                                 String fieldName) {
-        if (enabled) {
-            if (!value.trim().isEmpty()) {
-                builder.append(value.replace(".", "_")).append(".");
-            } else if (!defaultValue.isEmpty()) {
-                builder.append(defaultValue.replace(".", "_")).append(".");
-            } else {
-                throw new IllegalArgumentException(fieldName + " is missing and no default value is provided");
-            }
-        }
     }
 }

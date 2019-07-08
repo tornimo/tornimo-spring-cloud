@@ -1,6 +1,6 @@
 package io.tornimo.cloud.aws;
 
-public interface AwsEndpoint {
+public interface AwsEcsEndpoint {
 
     String query();
 }

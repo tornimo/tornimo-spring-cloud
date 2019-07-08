@@ -180,7 +180,7 @@ class AwsEcsEnvironmentDataFactorySpec extends Specification {
                         "resource",
                         "qualifier"
                 ),
-                new AwsEndpoint() {
+                new AwsEcsEndpoint() {
                     @Override
                     String query() {
                         return input
