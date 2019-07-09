@@ -3,7 +3,7 @@ package io.tornimo.cloud.aws;
 import java.io.InputStream;
 import java.net.URI;
 
-public class AwsEcsV2Endpoint implements AwsEndpoint {
+public class AwsEcsV2Endpoint implements AwsEcsEndpoint {
 
     @Override
     public String query() {

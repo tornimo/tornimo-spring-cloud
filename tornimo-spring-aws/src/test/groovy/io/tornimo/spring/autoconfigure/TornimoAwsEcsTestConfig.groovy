@@ -1,12 +1,14 @@
 package io.tornimo.spring.autoconfigure
 
-import io.tornimo.cloud.aws.AwsEndpoint
+import io.tornimo.cloud.aws.AwsEc2Endpoint
+import io.tornimo.cloud.aws.AwsEc2Metadata
+import io.tornimo.cloud.aws.AwsEcsEndpoint
 import org.springframework.context.annotation.Bean
 
 class TornimoAwsEcsTestConfig {
     @Bean
-    AwsEndpoint tornimoAwsEndpoint() {
-        return new AwsEndpoint() {
+    AwsEcsEndpoint tornimoAwsEcsEndpoint() {
+        return new AwsEcsEndpoint() {
             @Override
             String query() {
                 return """{
@@ -15,6 +17,15 @@ class TornimoAwsEcsTestConfig {
                         "Revision": "revision"
                     }"""
             }
+        }
+    }
+
+    @Bean
+    AwsEc2Endpoint tornimoAwsEc2Endpoint() {
+        return { ->
+            new AwsEc2Metadata(
+                    "region", "availability-zone", "instance-type", "instance-id", "account"
+            )
         }
     }
 }

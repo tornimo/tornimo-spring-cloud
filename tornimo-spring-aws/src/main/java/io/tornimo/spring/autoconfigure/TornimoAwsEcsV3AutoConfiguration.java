@@ -36,13 +36,13 @@ public class TornimoAwsEcsV3AutoConfiguration {
     @ConditionalOnMissingBean
     public TornimoEnvironmentData tornimoEnvironmentData(AwsArnConfig awsArnConfig,
                                                          AwsEcsMetadataConfig awsEcsMetadataConfig,
-                                                         AwsEndpoint awsEndpoint) {
-        return AwsEcsEnvironmentDataFactory.getEnvironmentData(awsEcsMetadataConfig, awsArnConfig, awsEndpoint);
+                                                         AwsEcsEndpoint awsEcsEndpoint) {
+        return AwsEcsEnvironmentDataFactory.getEnvironmentData(awsEcsMetadataConfig, awsArnConfig, awsEcsEndpoint);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public AwsEndpoint tornimoAwsEndpoint() {
+    public AwsEcsEndpoint tornimoAwsEndpoint() {
         return new AwsEcsV3Endpoint();
     }
 }
