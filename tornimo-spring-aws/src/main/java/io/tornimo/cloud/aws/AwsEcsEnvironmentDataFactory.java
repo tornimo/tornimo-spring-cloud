@@ -48,6 +48,7 @@ public class AwsEcsEnvironmentDataFactory {
         return AwsEcsMetadata.fromJson(json,
                 config.isCluster(),
                 config.isRevision(),
-                config.isTaskArn());
+                config.isTaskArn()
+                );
     }
 }
