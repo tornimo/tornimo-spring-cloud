@@ -41,7 +41,7 @@ public class AwsEc2MetadataConfig {
     }
 
     public static AwsEc2MetadataConfig defaults() {
-        return new AwsEc2MetadataConfig(true, true, true, false, true);
+        return new AwsEc2MetadataConfig(false, true, true, false, true);
     }
 
     public static AwsEc2MetadataConfig full() {

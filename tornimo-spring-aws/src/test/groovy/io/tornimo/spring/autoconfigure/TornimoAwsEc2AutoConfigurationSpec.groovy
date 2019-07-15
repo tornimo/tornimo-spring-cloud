@@ -16,6 +16,6 @@ class TornimoAwsEc2AutoConfigurationSpec extends Specification {
     def "environment data is created"() {
         expect: "the tornimoEnvironmentData is created"
         tornimoEnvironmentData != null
-        tornimoEnvironmentData.environmentString == "aws-ec2.region.availability-zone.instance-type.instance-id"
+        tornimoEnvironmentData.environmentString == "aws-ec2.availability-zone.instance-type.instance-id"
     }
 }
