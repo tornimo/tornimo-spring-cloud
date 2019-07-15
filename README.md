@@ -43,12 +43,12 @@ To configure the plugin all you have to do is add this dependency to your maven 
 <dependency>
     <groupId>io.tornimo</groupId>
     <artifactId>tornimo-spring-aws</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
 </dependency
 ```
 or for gradle project:
 ```
-compile group: 'io.tornimo', name: 'tornimo-spring-aws', version: '0.3.0'
+compile group: 'io.tornimo', name: 'tornimo-spring-aws', version: '0.3.1'
 ```
 
 ### AWS Fargate and ECS
