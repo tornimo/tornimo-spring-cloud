@@ -11,14 +11,14 @@ class AwsEc2EnvironmentDataFactorySpec extends Specification {
         def metadata = new AwsEc2Metadata("reg", "", "itype", "iid", "acc")
 
         when:
-        def data = AwsEc2EnvironmentDataFactory.getEnvironmentData(conf, metadata)
+        AwsEc2EnvironmentDataFactory.getEnvironmentData(conf, metadata)
 
         then:
         def e = thrown(IllegalArgumentException)
         e.message == "availabilityZone is missing and no default value is provided"
     }
 
-    def "enables region, availability zone, instance type, and instance ID by default"() {
+    def "enables availability zone, instance type, and instance ID by default"() {
         given:
         def conf = AwsEc2MetadataConfig.defaults()
         def metadata = new AwsEc2Metadata("reg", "az", "itype", "iid", "")
@@ -27,7 +27,7 @@ class AwsEc2EnvironmentDataFactorySpec extends Specification {
         def data = AwsEc2EnvironmentDataFactory.getEnvironmentData(conf, metadata)
 
         then:
-        data.environmentString == "aws-ec2.reg.az.itype.iid"
+        data.environmentString == "aws-ec2.az.itype.iid"
     }
 
     def "generates account id as third element"() {

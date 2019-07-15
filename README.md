@@ -38,12 +38,7 @@ compile group: 'io.tornimo', name: 'tornimo-spring-reporter', version: '0.2.1'
 
 ## tornimo-spring-aws
 tornimo-spring-aws is a set of utilities that will configure [tornimo-spring-reporter](https://github.com/tornimo/tornimo-spring-reporter) to work in the AWS environment.
-
-### AWS Fargate and ECS
-AWS [Fargate](https://aws.amazon.com/fargate/) and [ECS](https://aws.amazon.com/ecs/) are services allowing you to run your Docker containers in the cloud. tornimo-spring-aws implements utilities that give you access to the environment information like
-region, cluster name, task id, etc.
 To configure the plugin all you have to do is add this dependency to your maven project:  
-
 ```
 <dependency>
     <groupId>io.tornimo</groupId>
@@ -53,10 +48,14 @@ To configure the plugin all you have to do is add this dependency to your maven 
 ```
 or for gradle project:
 ```
-compile group: 'io.tornimo', name: 'tornimo-spring-aws', version: '0.1.0'
+compile group: 'io.tornimo', name: 'tornimo-spring-aws', version: '0.3.0'
 ```
 
-And one of these lines to the configuration
+### AWS Fargate and ECS
+AWS [Fargate](https://aws.amazon.com/fargate/) and [ECS](https://aws.amazon.com/ecs/) are services allowing you to run your Docker containers in the cloud. tornimo-spring-aws implements utilities that give you access to the environment information like
+region, cluster name, task id, etc.
+
+To enable ECS or Fargate support just add one of these lines to the configuration
 ```
 tornimo.aws-ecs-v2.enabled = true  # 1
 tornimo.aws-ecs-v3.enabled = true  # 2
@@ -68,6 +67,17 @@ AWS ECS v2 and v3 support Cluster, TaskARN and Revision properties and add them 
 For example your GC metric will look like this:
 ```
 $app.aws-ecs.$region.$cluster_name.$task_id.jvmGcPause.action.*.cause.*.m1_rate
+```
+
+
+### AWS EC2
+You can enable [EC2](https://aws.amazon.com/ec2/) support by adding this line to the configuration:
+```
+tornimo.aws-ec2.enabled = true 
+```
+After adding the line, the GC metric will look like this:
+```
+$app.aws-ec2.$availability_zone.$instance_type.$instance_id.jvmGcPause.action.*.cause.*.m1_rate
 ```
 
 ### Demo Dashboard
