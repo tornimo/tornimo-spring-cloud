@@ -2,7 +2,7 @@
 
 
 # tornimo-spring-cloud
-tornimo-spring-cloud is a set of utilities for configuring [micrometer.io](micrometer.io) to work with [tornimo-spring-reporter](https://github.com/tornimo/tornimo-spring-reporter) in the cloud.
+tornimo-spring-cloud is a set of utilities for configuring [micrometer.io](http://micrometer.io/) to work with [tornimo-spring-reporter](https://github.com/tornimo/tornimo-spring-reporter) in the cloud.
 Check out our repository containing the original [tornimo-spring-reporter](https://github.com/tornimo/tornimo-spring-reporter) plugin.
 
 ## Start Using Tornimo.io
